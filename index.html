@@ -101,40 +101,14 @@ body {
 .badge-ig { background: #2a1f2e; color: #c77dff; border: 0.5px solid #5a3a7a; }
 .badge-tt { background: #1a2a2e; color: #69d3e0; border: 0.5px solid #2a5a6a; }
 .gc-creator { font-size: 12px; color: #aaa; font-weight: 400; }
-
 .gc-embed-wrap {
   width: 100%;
-  height: 500px;
-  overflow: hidden;
   background: #0d0d0d;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  padding: 1rem 0;
 }
-
-.gc-embed-wrap .instagram-media {
-  margin: 0 !important;
-  min-width: 280px !important;
-}
-
-.tiktok-clip {
-  width: 100%;
-  height: 500px;
-  overflow: hidden;
-  background: #0d0d0d;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  position: relative;
-}
-
-.tiktok-clip iframe {
-  width: 340px !important;
-  height: 700px !important;
-  border: none;
-  margin-top: -10px;
-}
-
 .gc-footer { text-align: center; margin-top: 3rem; }
 .gc-cta-text { font-size: 12px; color: #555; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
 .gc-cta-email { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #c9a96e; letter-spacing: 0.05em; }
@@ -179,14 +153,10 @@ body {
   <div class="gc-card">
     <div class="gc-card-header">
       <span class="gc-platform-badge badge-ig">Instagram</span>
-      <span class="gc-creator">@creator</span>
+      <span class="gc-creator">@_brandonyoon_</span>
     </div>
-    <div class="gc-embed-wrap" style="align-items:center;">
-      <div style="text-align:center; color:#444; font-size:13px; padding: 2rem;">
-        <div style="font-size:2rem; margin-bottom:0.75rem;">🔗</div>
-        Video unavailable<br>
-        <span style="font-size:11px; color:#333;">Please replace with a new link</span>
-      </div>
+    <div class="gc-embed-wrap">
+      <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DX7RcsVuwkx/?utm_source=ig_embed&utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;margin:0;max-width:328px;min-width:280px;padding:0;width:100%;"></blockquote>
     </div>
   </div>
 
@@ -195,7 +165,7 @@ body {
       <span class="gc-platform-badge badge-tt">TikTok</span>
       <span class="gc-creator">@sarahesri</span>
     </div>
-    <div class="tiktok-clip">
+    <div class="gc-embed-wrap">
       <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@sarahesri/video/7636439634368679199" data-video-id="7636439634368679199" style="max-width:325px;min-width:280px;">
         <section></section>
       </blockquote>
@@ -207,7 +177,7 @@ body {
       <span class="gc-platform-badge badge-tt">TikTok</span>
       <span class="gc-creator">@sonyased5</span>
     </div>
-    <div class="tiktok-clip">
+    <div class="gc-embed-wrap">
       <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@sonyased5/video/7637252419885272334" data-video-id="7637252419885272334" style="max-width:325px;min-width:280px;">
         <section></section>
       </blockquote>
