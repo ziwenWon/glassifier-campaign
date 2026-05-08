@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glassifier — In the Wild</title>
+<title>Glassifier — Creator Spotlight</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,18 +14,9 @@ body {
   font-family: 'DM Sans', sans-serif;
 }
 .gc-header { text-align: center; margin-bottom: 3rem; }
-.gc-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 0.35em;
-  color: #c9a96e;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
 .gc-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2.8rem;
+  font-size: 3.8rem;
   font-weight: 300;
   color: #f5f0e8;
   line-height: 1.1;
@@ -57,16 +48,18 @@ body {
 .gc-stat { text-align: center; }
 .gc-stat-num {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem;
+  font-size: 2.2rem;
   font-weight: 600;
   color: #c9a96e;
+  display: block;
 }
 .gc-stat-label {
   font-size: 11px;
   color: #666;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-top: 2px;
+  margin-top: 4px;
+  display: block;
 }
 .gc-grid {
   display: grid;
@@ -117,20 +110,27 @@ body {
 <body>
 
 <div class="gc-header">
-  <div class="gc-logo">SR Biotek · Idenel</div>
-  <div class="gc-title">Glassifier<br>in the wild</div>
+  <div class="gc-title">Glassifier<br>Creator Spotlight</div>
   <div class="gc-divider"></div>
   <div class="gc-subtitle">Our U.S. influencer campaign is live — 40 top beauty creators sharing their Glassifier experience across Instagram and TikTok.</div>
   <div class="gc-stats-row">
-    <div class="gc-stat"><div class="gc-stat-num">40+</div><div class="gc-stat-label">Influencers</div></div>
-    <div class="gc-stat"><div class="gc-stat-num">US</div><div class="gc-stat-label">Market</div></div>
-    <div class="gc-stat"><div class="gc-stat-num">Live</div><div class="gc-stat-label">Now</div></div>
+    <div class="gc-stat">
+      <span class="gc-stat-num">40+</span>
+      <span class="gc-stat-label">Influencers</span>
+    </div>
+    <div class="gc-stat">
+      <span class="gc-stat-num">US</span>
+      <span class="gc-stat-label">Region</span>
+    </div>
+    <div class="gc-stat">
+      <span class="gc-stat-num">May 2026</span>
+      <span class="gc-stat-label">Live</span>
+    </div>
   </div>
 </div>
 
 <div class="gc-grid">
 
-  <!-- Row 1: Instagram x3 -->
   <div class="gc-card">
     <div class="gc-card-header">
       <span class="gc-platform-badge badge-ig">Instagram</span>
@@ -161,7 +161,6 @@ body {
     </div>
   </div>
 
-  <!-- Row 2: TikTok x3 -->
   <div class="gc-card">
     <div class="gc-card-header">
       <span class="gc-platform-badge badge-tt">TikTok</span>
