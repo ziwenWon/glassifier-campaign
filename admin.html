@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glassifier — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; min-height: 100vh; padding: 2rem 1.5rem; font-family: 'DM Sans', sans-serif; color: #ccc; }
+h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: #f5f0e8; margin-bottom: 0.25rem; }
+.subtitle { font-size: 12px; color: #555; letter-spacing: 0.1em; margin-bottom: 2rem; }
+.divider { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, #c9a96e, transparent); margin-bottom: 2rem; }
+.section { background: #111; border: 0.5px solid #2a2a2a; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.section h2 { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a96e; margin-bottom: 1rem; }
+label { font-size: 12px; color: #888; display: block; margin-bottom: 4px; margin-top: 12px; }
+input, select {
+  width: 100%; padding: 8px 12px; background: #1a1a1a; border: 0.5px solid #333;
+  border-radius: 6px; color: #eee; font-size: 13px; font-family: 'DM Sans', sans-serif;
+}
+input:focus, select:focus { outline: none; border-color: #c9a96e55; }
+.btn {
+  display: inline-block; padding: 8px 20px; border-radius: 6px; font-size: 12px;
+  letter-spacing: 0.08em; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif;
+  margin-top: 1rem;
+}
+.btn-gold { background: #c9a96e; color: #0a0a0a; font-weight: 500; }
+.btn-outline { background: transparent; border: 0.5px solid #333; color: #888; margin-left: 8px; }
+.btn:hover { opacity: 0.85; }
+.info { font-size: 12px; color: #555; line-height: 1.7; margin-top: 0.5rem; }
+.info a { color: #c9a96e; text-decoration: none; }
+.cols-row { display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem; }
+.cols-btn {
+  width: 36px; height: 36px; border-radius: 6px; background: #1a1a1a; border: 0.5px solid #333;
+  color: #eee; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.cols-btn:hover { border-color: #c9a96e55; }
+#cols-display { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #c9a96e; min-width: 2rem; text-align: center; }
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: #c9a96e; color: #0a0a0a; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<h1>Admin Panel</h1>
+<p class="subtitle">Glassifier Creator Spotlight</p>
+<div class="divider"></div>
+
+<div class="section">
+  <h2>Grid Columns</h2>
+  <p class="info">Set how many columns the video grid shows. 3 = 6 videos in 2 rows, 4 = 8 videos in 2 rows.</p>
+  <div class="cols-row">
+    <button class="cols-btn" onclick="changeCols(-1)">−</button>
+    <span id="cols-display">3</span>
+    <button class="cols-btn" onclick="changeCols(1)">+</button>
+  </div>
+  <button class="btn btn-gold" onclick="saveCols()">Save Column Setting</button>
+</div>
+
+<div class="section">
+  <h2>Manage Videos via Google Sheets</h2>
+  <p class="info">
+    Videos are managed in your Google Sheet. Open the sheet, edit the rows, and save — the page updates automatically.<br><br>
+    <strong>Columns required:</strong> <code style="color:#c9a96e">platform</code> · <code style="color:#c9a96e">creator</code> · <code style="color:#c9a96e">url</code><br>
+    <strong>Platform values:</strong> <code style="color:#c9a96e">instagram</code> or <code style="color:#c9a96e">tiktok</code>
+  </p>
+  <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vT5isfGGgfrGIHGkOdX-D7HRSOft7Lp6GaTRmj2IgNSZtz7GAkDVIIO7h3HwcVJnDKJGnSHxp5s8zhf/pub?output=csv" target="_blank">
+    <button class="btn btn-outline" style="margin-top:1rem;">Open Google Sheet ↗</button>
+  </a>
+</div>
+
+<div class="section">
+  <h2>Preview</h2>
+  <p class="info">Open the main page to see your changes live.</p>
+  <a href="index.html" target="_blank">
+    <button class="btn btn-gold">Open index.html ↗</button>
+  </a>
+</div>
+
+<div class="toast" id="toast">Saved!</div>
+
+<script>
+let cols = parseInt(localStorage.getItem('gc_cols') || '3');
+document.getElementById('cols-display').textContent = cols;
+
+function changeCols(delta) {
+  cols = Math.max(1, Math.min(6, cols + delta));
+  document.getElementById('cols-display').textContent = cols;
+}
+
+function saveCols() {
+  localStorage.setItem('gc_cols', cols);
+  showToast('Column setting saved!');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

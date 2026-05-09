@@ -63,9 +63,8 @@ body {
 }
 .gc-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 .gc-card {
@@ -105,6 +104,7 @@ body {
 .gc-footer { text-align: center; margin-top: 3rem; }
 .gc-cta-text { font-size: 12px; color: #555; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
 .gc-cta-email { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #c9a96e; letter-spacing: 0.05em; }
+.loading { text-align: center; color: #444; padding: 4rem; font-size: 13px; letter-spacing: 0.1em; }
 </style>
 </head>
 <body>
@@ -129,74 +129,8 @@ body {
   </div>
 </div>
 
-<div class="gc-grid">
-
-  <div class="gc-card">
-    <div class="gc-card-header">
-      <span class="gc-platform-badge badge-ig">Instagram</span>
-      <span class="gc-creator">@jennaabarci</span>
-    </div>
-    <div class="gc-embed-wrap">
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DX7c8fvBVsQ/" data-instgrm-version="14" style="background:#000;border:0;border-radius:3px;margin:0;max-width:328px;min-width:280px;padding:0;width:100%;"></blockquote>
-    </div>
-  </div>
-
-  <div class="gc-card">
-    <div class="gc-card-header">
-      <span class="gc-platform-badge badge-ig">Instagram</span>
-      <span class="gc-creator">@officialjulis</span>
-    </div>
-    <div class="gc-embed-wrap">
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DYDoYU1vUBa/" data-instgrm-version="14" style="background:#000;border:0;border-radius:3px;margin:0;max-width:328px;min-width:280px;padding:0;width:100%;"></blockquote>
-    </div>
-  </div>
-
-  <div class="gc-card">
-    <div class="gc-card-header">
-      <span class="gc-platform-badge badge-ig">Instagram</span>
-      <span class="gc-creator">@taelerwatson</span>
-    </div>
-    <div class="gc-embed-wrap">
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DX7Ds4xhE0d/" data-instgrm-version="14" style="background:#000;border:0;border-radius:3px;margin:0;max-width:328px;min-width:280px;padding:0;width:100%;"></blockquote>
-    </div>
-  </div>
-
-  <div class="gc-card">
-    <div class="gc-card-header">
-      <span class="gc-platform-badge badge-tt">TikTok</span>
-      <span class="gc-creator">@sarahesri</span>
-    </div>
-    <div class="gc-embed-wrap">
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@sarahesri/video/7636439634368679199" data-video-id="7636439634368679199" style="max-width:325px;min-width:280px;">
-        <section></section>
-      </blockquote>
-    </div>
-  </div>
-
-  <div class="gc-card">
-    <div class="gc-card-header">
-      <span class="gc-platform-badge badge-tt">TikTok</span>
-      <span class="gc-creator">@sonyased5</span>
-    </div>
-    <div class="gc-embed-wrap">
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@sonyased5/video/7637252419885272334" data-video-id="7637252419885272334" style="max-width:325px;min-width:280px;">
-        <section></section>
-      </blockquote>
-    </div>
-  </div>
-
-  <div class="gc-card">
-    <div class="gc-card-header">
-      <span class="gc-platform-badge badge-tt">TikTok</span>
-      <span class="gc-creator">@byo0n</span>
-    </div>
-    <div class="gc-embed-wrap">
-      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@byo0n/video/7636098601009057038" data-video-id="7636098601009057038" style="max-width:325px;min-width:280px;">
-        <section></section>
-      </blockquote>
-    </div>
-  </div>
-
+<div class="gc-grid" id="grid">
+  <div class="loading">Loading creators...</div>
 </div>
 
 <div class="gc-footer">
@@ -207,5 +141,72 @@ body {
 
 <script async src="//www.instagram.com/embed.js"></script>
 <script async src="https://www.tiktok.com/embed.js"></script>
+
+<script>
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5isfGGgfrGIHGkOdX-D7HRSOft7Lp6GaTRmj2IgNSZtz7GAkDVIIO7h3HwcVJnDKJGnSHxp5s8zhf/pub?output=csv';
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+  return lines.slice(1).map(line => {
+    const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = vals[i] || '');
+    return obj;
+  }).filter(r => r.url);
+}
+
+function getEmbedHTML(platform, url) {
+  if (platform === 'instagram') {
+    const clean = url.split('?')[0].replace(/\/$/, '');
+    return `<blockquote class="instagram-media" data-instgrm-permalink="${clean}/" data-instgrm-version="14" style="background:#000;border:0;border-radius:3px;margin:0;max-width:328px;min-width:280px;padding:0;width:100%;"></blockquote>`;
+  } else if (platform === 'tiktok') {
+    const match = url.match(/video\/(\d+)/);
+    const id = match ? match[1] : '';
+    const user = url.match(/@([^/]+)/)?.[1] || '';
+    return `<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@${user}/video/${id}" data-video-id="${id}" style="max-width:325px;min-width:280px;"><section></section></blockquote>`;
+  }
+  return '';
+}
+
+function getBadgeClass(platform) {
+  return platform === 'instagram' ? 'badge-ig' : 'badge-tt';
+}
+
+async function loadVideos() {
+  try {
+    const res = await fetch(CSV_URL);
+    const text = await res.text();
+    const videos = parseCSV(text);
+    const cols = parseInt(localStorage.getItem('gc_cols') || '3');
+
+    const grid = document.getElementById('grid');
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    grid.innerHTML = '';
+
+    videos.forEach(v => {
+      const platform = (v.platform || '').toLowerCase();
+      const card = document.createElement('div');
+      card.className = 'gc-card';
+      card.innerHTML = `
+        <div class="gc-card-header">
+          <span class="gc-platform-badge ${getBadgeClass(platform)}">${platform.charAt(0).toUpperCase() + platform.slice(1)}</span>
+          <span class="gc-creator">${v.creator || ''}</span>
+        </div>
+        <div class="gc-embed-wrap">${getEmbedHTML(platform, v.url)}</div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Re-process embeds
+    if (window.instgrm) window.instgrm.Embeds.process();
+    if (window.tiktok) window.tiktok.reload();
+  } catch(e) {
+    document.getElementById('grid').innerHTML = '<div class="loading">Unable to load content.</div>';
+  }
+}
+
+loadVideos();
+</script>
 </body>
 </html>
