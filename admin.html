@@ -16,59 +16,68 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300
 .info { font-size: 12px; color: #555; line-height: 1.7; margin-bottom: 1rem; }
 code { color: #c9a96e; }
 
-/* Grid controls */
-.grid-controls { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 1rem; }
+/* Counter controls */
+.grid-controls { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
 .grid-control-group { text-align: center; }
 .grid-control-label { font-size: 11px; color: #666; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
 .counter-row { display: flex; align-items: center; gap: 0.75rem; }
-.counter-btn {
-  width: 32px; height: 32px; border-radius: 6px; background: #1a1a1a;
-  border: 0.5px solid #333; color: #eee; font-size: 16px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
+.counter-btn { width: 32px; height: 32px; border-radius: 6px; background: #1a1a1a; border: 0.5px solid #333; color: #eee; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .counter-btn:hover { border-color: #c9a96e55; }
 .counter-val { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: #c9a96e; min-width: 2rem; text-align: center; }
 
-/* Group mode toggle */
-.toggle-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-.toggle { position: relative; width: 44px; height: 24px; }
-.toggle input { opacity: 0; width: 0; height: 0; }
-.toggle-slider {
-  position: absolute; inset: 0; background: #1a1a1a; border: 0.5px solid #333;
-  border-radius: 24px; cursor: pointer; transition: 0.3s;
+/* Drag grid */
+.drag-grid {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 1.5rem;
 }
-.toggle-slider:before {
-  content: ''; position: absolute; height: 16px; width: 16px;
-  left: 4px; bottom: 4px; background: #555; border-radius: 50%; transition: 0.3s;
+.drag-card {
+  background: #1a1a1a;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.2s, transform 0.15s;
+  user-select: none;
 }
-.toggle input:checked + .toggle-slider { background: #c9a96e22; border-color: #c9a96e55; }
-.toggle input:checked + .toggle-slider:before { transform: translateX(20px); background: #c9a96e; }
-.toggle-label { font-size: 13px; color: #aaa; }
+.drag-card:hover { border-color: #c9a96e44; }
+.drag-card.dragging { opacity: 0.4; transform: scale(0.97); }
+.drag-card.drag-over { border-color: #c9a96e; background: #1f1a10; }
+.drag-card.empty-slot {
+  border: 0.5px dashed #2a2a2a;
+  background: #111;
+  cursor: default;
+  opacity: 0.4;
+}
+.badge {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 20px; font-weight: 500; flex-shrink: 0;
+}
+.badge-ig { background: #2a1f2e; color: #c77dff; border: 0.5px solid #5a3a7a; }
+.badge-tt { background: #1a2a2e; color: #69d3e0; border: 0.5px solid #2a5a6a; }
+.drag-creator { font-size: 12px; color: #aaa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drag-handle { color: #444; font-size: 14px; flex-shrink: 0; margin-left: auto; }
 
-/* Group config */
-.group-config { display: none; margin-top: 1rem; }
-.group-config.show { display: block; }
-.group-row { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; }
-.group-name { font-size: 12px; color: #888; min-width: 80px; }
-.group-counter-row { display: flex; align-items: center; gap: 0.5rem; }
+/* Output box */
+.output-box {
+  background: #0d0d0d; border: 0.5px solid #1e1e1e; border-radius: 8px;
+  padding: 1rem; font-size: 11px; color: #666; line-height: 1.9;
+  font-family: monospace; white-space: pre; overflow-x: auto;
+  margin-top: 1rem; display: none;
+}
+.output-box.show { display: block; }
 
 /* Buttons */
-.btn {
-  display: inline-block; padding: 8px 20px; border-radius: 6px; font-size: 12px;
-  letter-spacing: 0.08em; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif;
-  margin-top: 0.5rem;
-}
+.btn { display: inline-block; padding: 8px 20px; border-radius: 6px; font-size: 12px; letter-spacing: 0.08em; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
 .btn-gold { background: #c9a96e; color: #0a0a0a; font-weight: 500; }
 .btn-outline { background: transparent; border: 0.5px solid #333; color: #888; }
 .btn:hover { opacity: 0.85; }
+.btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
 
-/* Preview box */
-.preview-box {
-  background: #0d0d0d; border: 0.5px solid #1e1e1e; border-radius: 8px;
-  padding: 1rem; font-size: 12px; color: #555; line-height: 1.8; margin-top: 1rem;
-  font-family: monospace;
-}
-
+.loading-msg { color: #444; font-size: 13px; padding: 1rem 0; }
 .toast { position: fixed; bottom: 2rem; right: 2rem; background: #c9a96e; color: #0a0a0a; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
 .toast.show { opacity: 1; }
 </style>
@@ -79,74 +88,52 @@ code { color: #c9a96e; }
 <p class="subtitle">Glassifier Creator Spotlight</p>
 <div class="divider"></div>
 
-<!-- Grid Layout -->
+<!-- Grid Layout + Drag -->
 <div class="section">
-  <h2>Grid Layout</h2>
-  <p class="info">Set columns and rows for the video grid. Total videos shown = columns × rows.</p>
+  <h2>Grid Layout & Order</h2>
+  <p class="info">Set columns, then drag videos into position. Click "Generate Order" to get the new sequence for Google Sheets.</p>
 
   <div class="grid-controls">
     <div class="grid-control-group">
       <span class="grid-control-label">Columns</span>
       <div class="counter-row">
-        <button class="counter-btn" onclick="change('cols', -1)">−</button>
+        <button class="counter-btn" onclick="changeCols(-1)">−</button>
         <span class="counter-val" id="cols-val">3</span>
-        <button class="counter-btn" onclick="change('cols', 1)">+</button>
-      </div>
-    </div>
-    <div class="grid-control-group">
-      <span class="grid-control-label">Rows</span>
-      <div class="counter-row">
-        <button class="counter-btn" onclick="change('rows', -1)">−</button>
-        <span class="counter-val" id="rows-val">2</span>
-        <button class="counter-btn" onclick="change('rows', 1)">+</button>
+        <button class="counter-btn" onclick="changeCols(1)">+</button>
       </div>
     </div>
   </div>
 
-  <!-- Group mode -->
-  <div class="toggle-row">
-    <label class="toggle">
-      <input type="checkbox" id="group-toggle" onchange="toggleGroup()">
-      <span class="toggle-slider"></span>
-    </label>
-    <span class="toggle-label">Split by platform (IG rows first, then TikTok rows)</span>
+  <div class="drag-grid" id="drag-grid">
+    <div class="loading-msg">Loading videos from Google Sheets...</div>
   </div>
 
-  <div class="group-config" id="group-config">
-    <p class="info">Set how many rows for each platform:</p>
-    <div class="group-row">
-      <span class="group-name" style="color:#c77dff;">Instagram</span>
-      <div class="group-counter-row">
-        <button class="counter-btn" onclick="change('ig-rows', -1)">−</button>
-        <span class="counter-val" id="ig-rows-val" style="font-size:1.4rem;">1</span>
-        <button class="counter-btn" onclick="change('ig-rows', 1)">+</button>
-      </div>
-      <span class="info" style="margin:0;">rows</span>
-    </div>
-    <div class="group-row">
-      <span class="group-name" style="color:#69d3e0;">TikTok</span>
-      <div class="group-counter-row">
-        <button class="counter-btn" onclick="change('tt-rows', -1)">−</button>
-        <span class="counter-val" id="tt-rows-val" style="font-size:1.4rem;">1</span>
-        <button class="counter-btn" onclick="change('tt-rows', 1)">+</button>
-      </div>
-      <span class="info" style="margin:0;">rows</span>
-    </div>
+  <div class="btn-row">
+    <button class="btn btn-gold" onclick="generateOrder()">Generate Order</button>
+    <button class="btn btn-outline" onclick="reloadFromSheet()">Reload from Sheet</button>
   </div>
 
-  <div class="preview-box" id="preview-box"></div>
+  <div class="output-box" id="output-box"></div>
 
-  <br>
-  <button class="btn btn-gold" onclick="saveSettings()">Save Layout Settings</button>
+  <div class="btn-row" id="copy-row" style="display:none;">
+    <button class="btn btn-gold" onclick="copyOrder()">Copy to Clipboard</button>
+    <p class="info" style="margin:0;align-self:center;">Then paste into Google Sheet (replace all data rows)</p>
+  </div>
+</div>
+
+<!-- Column setting save -->
+<div class="section">
+  <h2>Save Layout to Page</h2>
+  <p class="info">Save the current column count so index.html uses it.</p>
+  <button class="btn btn-gold" onclick="saveCols()">Save Column Setting</button>
 </div>
 
 <!-- Google Sheets -->
 <div class="section">
-  <h2>Manage Videos via Google Sheets</h2>
+  <h2>Open Google Sheets</h2>
   <p class="info">
-    Edit your Google Sheet to add, remove, or replace videos. Changes go live automatically.<br><br>
-    <strong>Required columns:</strong> <code>platform</code> · <code>creator</code> · <code>url</code><br>
-    <strong>Platform values:</strong> <code>instagram</code> or <code>tiktok</code>
+    Add or remove videos directly in the sheet. Required columns: <code>platform</code> · <code>creator</code> · <code>url</code><br>
+    Platform values: <code>instagram</code> or <code>tiktok</code>
   </p>
   <a href="https://docs.google.com/spreadsheets" target="_blank">
     <button class="btn btn-outline">Open Google Sheets ↗</button>
@@ -156,64 +143,138 @@ code { color: #c9a96e; }
 <!-- Preview -->
 <div class="section">
   <h2>Preview</h2>
-  <p class="info">Open the main page to see your changes live.</p>
   <a href="index.html" target="_blank">
     <button class="btn btn-gold">Open index.html ↗</button>
   </a>
 </div>
 
-<div class="toast" id="toast">Saved!</div>
+<div class="toast" id="toast"></div>
 
 <script>
-const state = {
-  cols: parseInt(localStorage.getItem('gc_cols') || '3'),
-  rows: parseInt(localStorage.getItem('gc_rows') || '2'),
-  'ig-rows': parseInt(localStorage.getItem('gc_ig_rows') || '1'),
-  'tt-rows': parseInt(localStorage.getItem('gc_tt_rows') || '1'),
-  grouped: localStorage.getItem('gc_grouped') === 'true'
-};
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5isfGGgfrGIHGkOdX-D7HRSOft7Lp6GaTRmj2IgNSZtz7GAkDVIIO7h3HwcVJnDKJGnSHxp5s8zhf/pub?output=csv';
 
-function init() {
-  document.getElementById('cols-val').textContent = state.cols;
-  document.getElementById('rows-val').textContent = state.rows;
-  document.getElementById('ig-rows-val').textContent = state['ig-rows'];
-  document.getElementById('tt-rows-val').textContent = state['tt-rows'];
-  document.getElementById('group-toggle').checked = state.grouped;
-  if (state.grouped) document.getElementById('group-config').classList.add('show');
-  updatePreview();
+let cols = parseInt(localStorage.getItem('gc_cols') || '3');
+let videos = [];
+let dragSrcIdx = null;
+
+document.getElementById('cols-val').textContent = cols;
+
+function changeCols(delta) {
+  cols = Math.max(1, Math.min(8, cols + delta));
+  document.getElementById('cols-val').textContent = cols;
+  renderGrid();
 }
 
-function change(key, delta) {
-  state[key] = Math.max(1, Math.min(10, state[key] + delta));
-  document.getElementById(`${key}-val`).textContent = state[key];
-  updatePreview();
+function saveCols() {
+  localStorage.setItem('gc_cols', cols);
+  showToast('Column setting saved!');
 }
 
-function toggleGroup() {
-  state.grouped = document.getElementById('group-toggle').checked;
-  document.getElementById('group-config').classList.toggle('show', state.grouped);
-  updatePreview();
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+  return lines.slice(1).map(line => {
+    const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = vals[i] || '');
+    return obj;
+  }).filter(r => r.url);
 }
 
-function updatePreview() {
-  const box = document.getElementById('preview-box');
-  if (state.grouped) {
-    const igCount = state.cols * state['ig-rows'];
-    const ttCount = state.cols * state['tt-rows'];
-    box.innerHTML = `Layout: ${state.cols} columns<br>Instagram: ${state['ig-rows']} row(s) → ${igCount} videos<br>TikTok: ${state['tt-rows']} row(s) → ${ttCount} videos<br>Total: ${igCount + ttCount} videos`;
-  } else {
-    const total = state.cols * state.rows;
-    box.innerHTML = `Layout: ${state.cols} columns × ${state.rows} rows = ${total} videos`;
+async function reloadFromSheet() {
+  const grid = document.getElementById('drag-grid');
+  grid.innerHTML = '<div class="loading-msg">Loading...</div>';
+  try {
+    const res = await fetch(CSV_URL + '&t=' + Date.now());
+    const text = await res.text();
+    videos = parseCSV(text);
+    renderGrid();
+  } catch(e) {
+    grid.innerHTML = '<div class="loading-msg">Failed to load. Check your Sheet is published.</div>';
   }
 }
 
-function saveSettings() {
-  localStorage.setItem('gc_cols', state.cols);
-  localStorage.setItem('gc_rows', state.rows);
-  localStorage.setItem('gc_ig_rows', state['ig-rows']);
-  localStorage.setItem('gc_tt_rows', state['tt-rows']);
-  localStorage.setItem('gc_grouped', state.grouped);
-  showToast('Settings saved!');
+function renderGrid() {
+  const grid = document.getElementById('drag-grid');
+  grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  grid.innerHTML = '';
+
+  // Fill with videos + empty slots to complete the grid
+  const total = Math.ceil(videos.length / cols) * cols;
+  for (let i = 0; i < total; i++) {
+    const v = videos[i];
+    const card = document.createElement('div');
+    if (!v) {
+      card.className = 'drag-card empty-slot';
+      card.innerHTML = '<span style="font-size:11px;color:#333;">empty</span>';
+    } else {
+      const platform = (v.platform || '').toLowerCase();
+      card.className = 'drag-card';
+      card.draggable = true;
+      card.dataset.idx = i;
+      card.innerHTML = `
+        <span class="badge ${platform === 'instagram' ? 'badge-ig' : 'badge-tt'}">${platform === 'instagram' ? 'IG' : 'TT'}</span>
+        <span class="drag-creator">${v.creator || v.url}</span>
+        <span class="drag-handle">⠿</span>
+      `;
+      card.addEventListener('dragstart', onDragStart);
+      card.addEventListener('dragover', onDragOver);
+      card.addEventListener('drop', onDrop);
+      card.addEventListener('dragend', onDragEnd);
+    }
+    grid.appendChild(card);
+  }
+
+  document.getElementById('output-box').classList.remove('show');
+  document.getElementById('copy-row').style.display = 'none';
+}
+
+function onDragStart(e) {
+  dragSrcIdx = parseInt(e.currentTarget.dataset.idx);
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.drag-card').forEach(c => c.classList.remove('drag-over'));
+  e.currentTarget.classList.add('drag-over');
+}
+
+function onDrop(e) {
+  e.preventDefault();
+  const targetIdx = parseInt(e.currentTarget.dataset.idx);
+  if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  // Swap
+  const tmp = videos[dragSrcIdx];
+  videos[dragSrcIdx] = videos[targetIdx];
+  videos[targetIdx] = tmp;
+  renderGrid();
+}
+
+function onDragEnd(e) {
+  document.querySelectorAll('.drag-card').forEach(c => {
+    c.classList.remove('dragging', 'drag-over');
+  });
+  dragSrcIdx = null;
+}
+
+function generateOrder() {
+  const lines = ['platform,creator,url'];
+  videos.filter(v => v).forEach(v => {
+    lines.push(`${v.platform},${v.creator},${v.url}`);
+  });
+  const output = lines.join('\n');
+  const box = document.getElementById('output-box');
+  box.textContent = output;
+  box.classList.add('show');
+  document.getElementById('copy-row').style.display = 'flex';
+}
+
+function copyOrder() {
+  const text = document.getElementById('output-box').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
 }
 
 function showToast(msg) {
@@ -223,7 +284,7 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-init();
+reloadFromSheet();
 </script>
 </body>
 </html>
