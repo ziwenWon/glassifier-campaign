@@ -177,8 +177,22 @@ async function loadVideos() {
   try {
     const res = await fetch(CSV_URL);
     const text = await res.text();
-    const videos = parseCSV(text);
+    const allVideos = parseCSV(text);
+
     const cols = parseInt(localStorage.getItem('gc_cols') || '3');
+    const rows = parseInt(localStorage.getItem('gc_rows') || '2');
+    const grouped = localStorage.getItem('gc_grouped') === 'true';
+    const igRows = parseInt(localStorage.getItem('gc_ig_rows') || '1');
+    const ttRows = parseInt(localStorage.getItem('gc_tt_rows') || '1');
+
+    let videos;
+    if (grouped) {
+      const igVideos = allVideos.filter(v => v.platform.toLowerCase() === 'instagram').slice(0, cols * igRows);
+      const ttVideos = allVideos.filter(v => v.platform.toLowerCase() === 'tiktok').slice(0, cols * ttRows);
+      videos = [...igVideos, ...ttVideos];
+    } else {
+      videos = allVideos.slice(0, cols * rows);
+    }
 
     const grid = document.getElementById('grid');
     grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
@@ -198,9 +212,16 @@ async function loadVideos() {
       grid.appendChild(card);
     });
 
-    // Re-process embeds
+    // Re-process Instagram embeds
     if (window.instgrm) window.instgrm.Embeds.process();
-    if (window.tiktok) window.tiktok.reload();
+
+    // Re-process TikTok embeds by reloading the script
+    const oldTT = document.querySelector('script[src*="tiktok.com/embed"]');
+    if (oldTT) oldTT.remove();
+    const ttScript = document.createElement('script');
+    ttScript.src = 'https://www.tiktok.com/embed.js';
+    ttScript.async = true;
+    document.body.appendChild(ttScript);
   } catch(e) {
     document.getElementById('grid').innerHTML = '<div class="loading">Unable to load content.</div>';
   }
