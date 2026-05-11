@@ -64,7 +64,7 @@ body {
 .gc-grid {
   display: grid;
   gap: 1.5rem;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 .gc-card {
@@ -100,6 +100,12 @@ body {
   justify-content: center;
   align-items: flex-start;
   padding: 1rem 0;
+  overflow: hidden;
+}
+.gc-embed-wrap > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  width: 100% !important;
 }
 .gc-footer { text-align: center; margin-top: 3rem; }
 .gc-cta-text { font-size: 12px; color: #555; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
@@ -159,12 +165,12 @@ function parseCSV(text) {
 function getEmbedHTML(platform, url) {
   if (platform === 'instagram') {
     const clean = url.split('?')[0].replace(/\/$/, '');
-    return `<blockquote class="instagram-media" data-instgrm-permalink="${clean}/" data-instgrm-version="14" style="background:#000;border:0;border-radius:3px;margin:0;max-width:328px;min-width:280px;padding:0;width:100%;"></blockquote>`;
+    return `<blockquote class="instagram-media" data-instgrm-permalink="${clean}/" data-instgrm-version="14" style="background:#000;border:0;border-radius:3px;margin:0;padding:0;"></blockquote>`;
   } else if (platform === 'tiktok') {
     const match = url.match(/video\/(\d+)/);
     const id = match ? match[1] : '';
     const user = url.match(/@([^/]+)/)?.[1] || '';
-    return `<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@${user}/video/${id}" data-video-id="${id}" style="max-width:325px;min-width:280px;"><section></section></blockquote>`;
+    return `<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@${user}/video/${id}" data-video-id="${id}"><section></section></blockquote>`;
   }
   return '';
 }
