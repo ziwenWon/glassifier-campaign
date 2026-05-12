@@ -150,6 +150,23 @@ body {
 
 <script>
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5isfGGgfrGIHGkOdX-D7HRSOft7Lp6GaTRmj2IgNSZtz7GAkDVIIO7h3HwcVJnDKJGnSHxp5s8zhf/pub?output=csv';
+const CONFIG_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5isfGGgfrGIHGkOdX-D7HRSOft7Lp6GaTRmj2IgNSZtz7GAkDVIIO7h3HwcVJnDKJGnSHxp5s8zhf/pub?gid=1285856924&single=true&output=csv';
+
+async function fetchConfig() {
+  try {
+    const res = await fetch(CONFIG_URL + '&t=' + Date.now());
+    const text = await res.text();
+    const lines = text.trim().split('\n').slice(1); // skip header
+    const config = {};
+    lines.forEach(line => {
+      const [key, value] = line.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+      if (key) config[key.toLowerCase()] = value;
+    });
+    return config;
+  } catch(e) {
+    return {};
+  }
+}
 
 function parseCSV(text) {
   const lines = text.trim().split('\n');
@@ -181,24 +198,14 @@ function getBadgeClass(platform) {
 
 async function loadVideos() {
   try {
-    const res = await fetch(CSV_URL);
+    const [res, config] = await Promise.all([fetch(CSV_URL), fetchConfig()]);
     const text = await res.text();
     const allVideos = parseCSV(text);
 
-    const cols = parseInt(localStorage.getItem('gc_cols') || '3');
-    const rows = parseInt(localStorage.getItem('gc_rows') || '2');
-    const grouped = localStorage.getItem('gc_grouped') === 'true';
-    const igRows = parseInt(localStorage.getItem('gc_ig_rows') || '1');
-    const ttRows = parseInt(localStorage.getItem('gc_tt_rows') || '1');
+    const cols = parseInt(config.columns || '3');
+    const rows = parseInt(config.rows || '2');
 
-    let videos;
-    if (grouped) {
-      const igVideos = allVideos.filter(v => v.platform.toLowerCase() === 'instagram').slice(0, cols * igRows);
-      const ttVideos = allVideos.filter(v => v.platform.toLowerCase() === 'tiktok').slice(0, cols * ttRows);
-      videos = [...igVideos, ...ttVideos];
-    } else {
-      videos = allVideos.slice(0, cols * rows);
-    }
+    const videos = allVideos.slice(0, cols * rows);
 
     const grid = document.getElementById('grid');
     grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
